@@ -14,6 +14,10 @@ class Task(models.Model):
     class Meta:
         db_table = "task"
 
+    def save(self, *args, **kwargs):
+        self.name = self.name.upper()
+        super(Task, self).save(args, kwargs)
+
 class Feedback(models.Model):
     rating = models.CharField(choices=CHOICES, max_length=5)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -43,3 +47,13 @@ class Video(models.Model):
     
     class Meta:
         db_table = "video"
+
+class Preference(models.Model):
+    dp = models.CharField(max_length=30)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "preference"
+
+    def __str__(self):
+        return f"{self.dp} - {self.user}"
